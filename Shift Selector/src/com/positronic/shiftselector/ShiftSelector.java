@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -36,6 +37,15 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 	private LayoutManager layoutManager;
 	private int leftSelection = -1;
 	private int rightSelection = -1;
+	
+	private ShiftSelector thisObject;
+
+	/*
+	 * Optionally, toNotify can be set to any JComponent (usually one containing
+	 * the ShiftSelector. Whenever the shift button is pressed, an event is
+	 * triggered on the JComponent.
+	 */
+	private JComponent toNotify = null;
 
 	public ShiftSelector()
 	{
@@ -54,6 +64,8 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 		this.almLeft = almLeft;
 		this.buttonText = buttonText;
 		this.almRight = almRight;
+		
+		this.thisObject=this;
 
 		super.setBounds(bounds);
 
@@ -92,6 +104,7 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 
 		button.addMouseListener(new MouseAdapter()
 		{
+
 			public void mouseReleased(MouseEvent arg0)
 			{
 				if (leftSelection != -1)
@@ -105,6 +118,11 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 					String o = dlmRight.getElementAt(rightSelection);
 					dlmRight.removeElement(o);
 					dlmLeft.add(dlmLeft.getSize(), o);
+				}
+				
+				if (toNotify != null)
+				{
+					toNotify.dispatchEvent(new ShiftSelectorEvent(thisObject,0));
 				}
 			}
 		});
@@ -203,6 +221,11 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 		return layoutManager;
 	}
 
+	public JComponent getToNotify()
+	{
+		return toNotify;
+	}
+
 	public int hashCode()
 	{
 		final int prime = 31;
@@ -241,6 +264,11 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 	public void setLayoutManager(LayoutManager layoutManager)
 	{
 		this.layoutManager = layoutManager;
+	}
+
+	public void setToNotify(JComponent toNotify)
+	{
+		this.toNotify = toNotify;
 	}
 
 	public String toString()
