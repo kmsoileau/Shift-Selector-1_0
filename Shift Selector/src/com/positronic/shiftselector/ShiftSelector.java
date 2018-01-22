@@ -16,7 +16,6 @@ import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -118,7 +117,7 @@ public class ShiftSelector extends JPanel implements Serializable
 				}
 
 				thisObject.setChanged();
-				thisObject.notifyObservers();
+				thisObject.notifyObservers(dlmRight);
 			}
 		});
 		this.add(button);
@@ -243,11 +242,6 @@ public class ShiftSelector extends JPanel implements Serializable
 		return layoutManager;
 	}
 
-	public JComponent getToNotify()
-	{
-		return toNotify;
-	}
-
 	// Returns the boolean value true if this observable has changed state.
 	public boolean hasChanged()
 	{
@@ -313,11 +307,6 @@ public class ShiftSelector extends JPanel implements Serializable
 	public void setLayoutManager(LayoutManager layoutManager)
 	{
 		this.layoutManager = layoutManager;
-	}
-
-	public void setToNotify(JComponent toNotify)
-	{
-		this.toNotify = toNotify;
 	}
 
 	public String toString()
