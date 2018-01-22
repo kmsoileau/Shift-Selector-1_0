@@ -52,6 +52,13 @@ public class ShiftSelector extends JPanel implements Serializable
 				new DefaultListModel<String>());
 	}
 
+	public ShiftSelector(LayoutManager layoutManager, String[] leftItems,
+			String buttonText, String[] rightItems)
+	{
+		this(new Rectangle(750, 300), layoutManager, leftItems, buttonText,
+				rightItems);
+	}
+
 	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
 			DefaultListModel<String> almLeft, String buttonText,
 			DefaultListModel<String> almRight)
@@ -141,6 +148,25 @@ public class ShiftSelector extends JPanel implements Serializable
 		});
 		if (almRight != null)
 			rightScrollPane.setViewportView(rightJList);
+	}
+
+	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
+			String[] leftItems, String buttonText, String[] rightItems)
+	{
+		this(bounds, layoutManager, new DefaultListModel<String>(), buttonText,
+				new DefaultListModel<String>());
+
+		for (int i = 0; i < leftItems.length; i++)
+			this.almLeft.addElement(leftItems[i]);
+
+		for (int i = 0; i < rightItems.length; i++)
+			this.almRight.addElement(rightItems[i]);
+	}
+
+	public ShiftSelector(String[] leftItems, String buttonText,
+			String[] rightItems)
+	{
+		this(new FlowLayout(), leftItems, buttonText, rightItems);
 	}
 
 	public void addObserver(Observer obs)
