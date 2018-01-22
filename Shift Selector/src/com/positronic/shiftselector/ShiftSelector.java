@@ -45,13 +45,6 @@ public class ShiftSelector extends JPanel implements Serializable
 	private int rightSelection = -1;
 	private ShiftSelector thisObject;
 
-	/*
-	 * Optionally, toNotify can be set to any JComponent (usually one containing
-	 * the ShiftSelector. Whenever the shift button is pressed, an event is
-	 * triggered on the JComponent.
-	 */
-	private JComponent toNotify = null;
-
 	public ShiftSelector()
 	{
 		this(new Rectangle(750, 300), new FlowLayout(),
@@ -109,7 +102,6 @@ public class ShiftSelector extends JPanel implements Serializable
 
 		button.addMouseListener(new MouseAdapter()
 		{
-
 			public void mouseReleased(MouseEvent arg0)
 			{
 				if (leftSelection != -1)
@@ -125,11 +117,8 @@ public class ShiftSelector extends JPanel implements Serializable
 					dlmLeft.add(dlmLeft.getSize(), o);
 				}
 
-				// Replace with Observer design pattern code
-				if (toNotify != null)
-				{
-					toNotify.dispatchEvent(new ShiftSelectorEvent(thisObject, 0));
-				}
+				thisObject.setChanged();
+				thisObject.notifyObservers();
 			}
 		});
 		this.add(button);
