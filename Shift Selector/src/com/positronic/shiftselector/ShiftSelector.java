@@ -10,6 +10,9 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -21,7 +24,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ShiftSelector extends JPanel implements java.io.Serializable
+public class ShiftSelector extends JPanel implements Serializable
 {
 	private static final long serialVersionUID = -4468144209547852942L;
 
@@ -36,8 +39,10 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 	private String buttonText;
 	private LayoutManager layoutManager;
 	private int leftSelection = -1;
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
+	private boolean oFlag;
+
 	private int rightSelection = -1;
-	
 	private ShiftSelector thisObject;
 
 	/*
@@ -64,8 +69,8 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 		this.almLeft = almLeft;
 		this.buttonText = buttonText;
 		this.almRight = almRight;
-		
-		this.thisObject=this;
+
+		this.thisObject = this;
 
 		super.setBounds(bounds);
 
@@ -119,10 +124,11 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 					dlmRight.removeElement(o);
 					dlmLeft.add(dlmLeft.getSize(), o);
 				}
-				
+
+				// Replace with Observer design pattern code
 				if (toNotify != null)
 				{
-					toNotify.dispatchEvent(new ShiftSelectorEvent(thisObject,0));
+					toNotify.dispatchEvent(new ShiftSelectorEvent(thisObject, 0));
 				}
 			}
 		});
@@ -147,6 +153,33 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 		});
 		if (almRight != null)
 			rightScrollPane.setViewportView(rightJList);
+	}
+
+	public void addObserver(Observer obs)
+	{
+		this.observers.add(obs);
+	}
+
+	// Clears the internal flag that indicates this observable has changed
+	// state.
+	protected void clearChanged()
+	{
+		this.oFlag = false;
+	}
+
+	public int countObservers()
+	{
+		return this.observers.size();
+	}
+
+	public void deleteObserver(Observer obs)
+	{
+		this.observers.remove(obs);
+	}
+
+	public void deleteObservers()
+	{
+		this.observers.clear();
 	}
 
 	public boolean equals(Object obj)
@@ -226,6 +259,12 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 		return toNotify;
 	}
 
+	// Returns the boolean value true if this observable has changed state.
+	public boolean hasChanged()
+	{
+		return this.oFlag;
+	}
+
 	public int hashCode()
 	{
 		final int prime = 31;
@@ -239,6 +278,21 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 		result = prime * result
 				+ ((layoutManager == null) ? 0 : layoutManager.hashCode());
 		return result;
+	}
+
+	// Checks the internal flag to see if the observable has changed state and
+	// notifies all observers.
+	public void notifyObservers()
+	{
+
+	}
+
+	// Checks the internal flag to see if the observable has changed state and
+	// notifies all observers. Passes the object specified in the parameter list
+	// to the notify() method of the observer.
+	public void notifyObservers(Object obj)
+	{
+
 	}
 
 	public void setAlmLeft(DefaultListModel<String> almLeft)
@@ -259,6 +313,12 @@ public class ShiftSelector extends JPanel implements java.io.Serializable
 	public void setButtonText(String buttonText)
 	{
 		this.buttonText = buttonText;
+	}
+
+	// Sets the internal flag that indicates this observable has changed state.
+	protected void setChanged()
+	{
+		this.oFlag = true;
 	}
 
 	public void setLayoutManager(LayoutManager layoutManager)
