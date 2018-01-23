@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -38,7 +37,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	private String buttonText;
 	private LayoutManager layoutManager;
 	private int leftSelection = -1;
-	private ArrayList<iObserver> observers = new ArrayList<iObserver>();
+	protected ArrayList<iObserver> observers = new ArrayList<iObserver>();
 	protected boolean oFlag;
 
 	private int rightSelection = -1;
@@ -68,7 +67,6 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this.almLeft = almLeft;
 		this.buttonText = buttonText;
 		this.almRight = almRight;
-
 		this.thisObject = this;
 
 		super.setBounds(bounds);
@@ -169,11 +167,9 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this(new FlowLayout(), leftItems, buttonText, rightItems);
 	}
 
-	@Override
 	public void addObserver(iObserver o)
 	{
-		// TODO Auto-generated method stub
-		
+		observers.add(o);
 	}
 
 	// Clears the internal flag that indicates this observable has changed
@@ -188,14 +184,10 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		return this.observers.size();
 	}
 
-	@Override
 	public void deleteObserver(iObserver o)
 	{
-		// TODO Auto-generated method stub
-		
+		observers.remove(o);
 	}
-
-	
 
 	public void deleteObservers()
 	{
