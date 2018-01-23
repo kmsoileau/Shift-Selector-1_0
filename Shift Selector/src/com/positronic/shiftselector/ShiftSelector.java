@@ -12,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observer;
+
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -23,7 +23,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ShiftSelector extends JPanel implements Serializable
+public class ShiftSelector extends JPanel implements Serializable, iObservable
 {
 	private static final long serialVersionUID = -4468144209547852942L;
 
@@ -38,8 +38,8 @@ public class ShiftSelector extends JPanel implements Serializable
 	private String buttonText;
 	private LayoutManager layoutManager;
 	private int leftSelection = -1;
-	private ArrayList<Observer> observers = new ArrayList<Observer>();
-	private boolean oFlag;
+	private ArrayList<iObserver> observers = new ArrayList<iObserver>();
+	protected boolean oFlag;
 
 	private int rightSelection = -1;
 	private ShiftSelector thisObject;
@@ -169,14 +169,16 @@ public class ShiftSelector extends JPanel implements Serializable
 		this(new FlowLayout(), leftItems, buttonText, rightItems);
 	}
 
-	public void addObserver(Observer obs)
+	@Override
+	public void addObserver(iObserver o)
 	{
-		this.observers.add(obs);
+		// TODO Auto-generated method stub
+		
 	}
 
 	// Clears the internal flag that indicates this observable has changed
 	// state.
-	protected void clearChanged()
+	public void clearChanged()
 	{
 		this.oFlag = false;
 	}
@@ -186,10 +188,14 @@ public class ShiftSelector extends JPanel implements Serializable
 		return this.observers.size();
 	}
 
-	public void deleteObserver(Observer obs)
+	@Override
+	public void deleteObserver(iObserver o)
 	{
-		this.observers.remove(obs);
+		// TODO Auto-generated method stub
+		
 	}
+
+	
 
 	public void deleteObservers()
 	{
@@ -325,7 +331,7 @@ public class ShiftSelector extends JPanel implements Serializable
 	}
 
 	// Sets the internal flag that indicates this observable has changed state.
-	protected void setChanged()
+	public void setChanged()
 	{
 		this.oFlag = true;
 	}
