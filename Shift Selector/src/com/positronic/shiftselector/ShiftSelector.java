@@ -167,9 +167,14 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this(new FlowLayout(), leftItems, buttonText, rightItems);
 	}
 
-	public void addObserver(iObserver o)
+	public synchronized void addObserver(iObserver o)
 	{
-		observers.add(o);
+		if (o == null)
+			throw new NullPointerException();
+		if (!observers.contains(o))
+		{
+			observers.add(o);
+		}
 	}
 
 	// Clears the internal flag that indicates this observable has changed
@@ -184,14 +189,14 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		return this.observers.size();
 	}
 
-	public void deleteObserver(iObserver o)
+	public synchronized void deleteObserver(iObserver o)
 	{
 		observers.remove(o);
 	}
 
-	public void deleteObservers()
+	public synchronized void deleteObservers()
 	{
-		this.observers.clear();
+		observers.clear();
 	}
 
 	public boolean equals(Object obj)
@@ -291,15 +296,40 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	// notifies all observers.
 	public void notifyObservers()
 	{
-
+		notifyObservers(null);
 	}
 
 	// Checks the internal flag to see if the observable has changed state and
 	// notifies all observers. Passes the object specified in the parameter list
 	// to the notify() method of the observer.
-	public void notifyObservers(Object obj)
+	public void notifyObservers(Object arg)
 	{
+		/*
+		 * a temporary array buffer, used as a snapshot of the state of current
+		 * Observers.
+		 */
+		Object[] arrLocal;
 
+		synchronized (this)
+		{
+			/*
+			 * We don't want the Observer doing callbacks into arbitrary code
+			 * while holding its own Monitor. The code where we extract each
+			 * Observable from the Vector and store the state of the Observer
+			 * needs synchronization, but notifying observers does not (should
+			 * not). The worst result of any potential race-condition here is
+			 * that: 1) a newly-added Observer will miss a notification in
+			 * progress 2) a recently unregistered Observer will be wrongly
+			 * notified when it doesn't care
+			 */
+			if (!this.oFlag)
+				return;
+			arrLocal = observers.toArray();
+			clearChanged();
+		}
+
+		for (int i = arrLocal.length - 1; i >= 0; i--)
+			((iObserver) arrLocal[i]).update(this, arg);
 	}
 
 	public void setAlmLeft(DefaultListModel<String> almLeft)
@@ -323,7 +353,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	}
 
 	// Sets the internal flag that indicates this observable has changed state.
-	public void setChanged()
+	public synchronized void setChanged()
 	{
 		this.oFlag = true;
 	}
