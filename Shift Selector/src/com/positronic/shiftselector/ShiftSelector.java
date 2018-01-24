@@ -22,6 +22,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/*
+ * Copyright (c) 2017-8. Positronic Software
+ */
+
 public class ShiftSelector extends JPanel implements Serializable, iObservable
 {
 	private static final long serialVersionUID = -4468144209547852942L;

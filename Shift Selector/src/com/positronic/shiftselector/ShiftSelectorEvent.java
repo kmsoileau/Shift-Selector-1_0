@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2017-8. Positronic Software
+ */
+
 package com.positronic.shiftselector;
 
 import java.awt.AWTEvent;
