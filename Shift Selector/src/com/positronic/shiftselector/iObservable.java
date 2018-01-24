@@ -6,14 +6,6 @@ public interface iObservable
 
 	void clearChanged();
 
-	int countObservers();
-
-	void deleteObserver(iObserver o);
-
-	void deleteObservers();
-
-	boolean hasChanged();
-
 	void notifyObservers();
 
 	void notifyObservers(Object arg);
