@@ -1,22 +1,22 @@
-/*
- * Copyright (c) 2017-8. Positronic Software
- */
-
 package com.positronic.shiftselector;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.SystemColor;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-public class ShiftSelectorDemo
+public class ShiftSelectorDemo extends JFrame
 {
+	private static final long serialVersionUID = 3755828243732900220L;
+
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
@@ -25,7 +25,8 @@ public class ShiftSelectorDemo
 			{
 				try
 				{
-					new ShiftSelectorDemo();
+					ShiftSelectorDemo frame = new ShiftSelectorDemo();
+					frame.setVisible(true);
 				}
 				catch (Exception e)
 				{
@@ -35,82 +36,38 @@ public class ShiftSelectorDemo
 		});
 	}
 
-	private JFrame frame;
+	private JPanel contentPane;
+	private ShiftSelector shiftSelector;
 
 	public ShiftSelectorDemo()
 	{
-		initialize();
-	}
-
-	private void initialize()
-	{
-		frame = new JFrame("Shift Selector Demo");
-		frame.setIconImage(Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						ShiftSelectorDemo.class
-								.getResource("/com/positronic/shiftselector/ShiftSelectorIcon.png")));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(new Rectangle(new Point(80, 80),
-				new Dimension(470, 350)));
-
-		Rectangle bounds = new Rectangle(new Point(1200, 120), new Dimension(
-				450, 300));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 800, 400);
+		contentPane = new JPanel();
+		contentPane.setPreferredSize(new Dimension(20, 314));
+		contentPane.setBackground(SystemColor.control);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		
+		Rectangle bounds = new Rectangle(new Dimension(750, 300));
+		
 		LayoutManager layoutManager = new FlowLayout();
-
-		/*
-		 * String[] leftItems = new String[] { "A", "B", "C", "D", "E", "F",
-		 * "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-		 * "Quaternionic Hyperspace Radiation" };
-		 */
-		String[] leftItems = randomStrings(20, 20);
-
+		
+		String[] leftItems = new String[]{"A","B","C"};
 		DefaultListModel<String> leftListModel = new DefaultListModel<String>();
 		for (int i = 0; i < leftItems.length; i++)
 			leftListModel.addElement(leftItems[i]);
-
-		/*
-		 * String[] rightItems = new String[] { "R", "S", "T", "U", "V", "W",
-		 * "X", "Y", "Z" };
-		 */
-
-		String[] rightItems = randomStrings(20, 20);
+		
+		String[] rightItems = new String[]{};
 		DefaultListModel<String> rightListModel = new DefaultListModel<String>();
 		for (int i = 0; i < rightItems.length; i++)
 			rightListModel.addElement(rightItems[i]);
-
-		ShiftSelector panel = new ShiftSelector(bounds, layoutManager,
-				leftListModel, " ", rightListModel);
-		frame.getContentPane().add(panel);
-
-		frame.setVisible(true);
-	}
-
-	private String randomLetter()
-	{
-		String[] alphabet = new String[]
-		{ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-				"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-				" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ",
-				" ", " " };
-		return alphabet[(int) (Math.random() * alphabet.length)];
-	}
-
-	private String randomString(int length)
-	{
-		if (length < 1)
-			return "";
-
-		return randomLetter() + randomString(length - 1);
-	}
-
-	private String[] randomStrings(int n, int length)
-	{
-		if (n < 0)
-			return null;
-		String[] ret = new String[n];
-		for (int i = 0; i < n; i++)
-			ret[i] = randomString(length);
-		return ret;
+		
+		shiftSelector = new ShiftSelector(bounds, layoutManager,
+				leftListModel, "<==>",
+				rightListModel);
+		
+		contentPane.add(shiftSelector, BorderLayout.CENTER);
 	}
 }
