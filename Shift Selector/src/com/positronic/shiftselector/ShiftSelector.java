@@ -53,7 +53,6 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		this.leftScrollPane = new JScrollPane();
 		this.leftScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
-		this.add(leftScrollPane);
 		this.rightScrollPane = new JScrollPane();
 		this.rightScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
 	}
@@ -98,6 +97,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		});
 		if (almLeft != null)
 			leftScrollPane.setViewportView(leftJList);
+		this.add(leftScrollPane);
 
 		JButton button = new JButton(buttonText);
 		button.setPreferredSize(new Dimension((int) (this.getWidth() * .1),
