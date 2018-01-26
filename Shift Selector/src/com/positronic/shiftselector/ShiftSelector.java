@@ -40,14 +40,15 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	protected Rectangle bounds;
 	protected String buttonText;
 	protected LayoutManager layoutManager;
+	private JList<String> leftJList;
+	private JScrollPane leftScrollPane;
 	private int leftSelection = -1;
 	protected ArrayList<iObserver> observers = new ArrayList<iObserver>();
 	protected boolean oFlag;
+	private JScrollPane rightScrollPane;
 	private int rightSelection = -1;
 	private ShiftSelector thisObject;
-	private JScrollPane leftScrollPane;
-	private JScrollPane rightScrollPane;
-	private JList<String> leftJList;
+	private JButton button;
 
 	public ShiftSelector()
 	{
@@ -65,55 +66,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				rightItems);
 	}
 	
-	JScrollPane doLeftJScrollPane(DefaultListModel<String> almLeft)
+	void doButtonListener(DefaultListModel<String> dlmLeft,DefaultListModel<String> dlmRight)
 	{
-		this.leftJList = new JList<String>(almLeft);
-		leftJList.addListSelectionListener(new ListSelectionListener()
-		{
-			public void valueChanged(ListSelectionEvent arg0)
-			{
-				if (!arg0.getValueIsAdjusting())
-				{
-					leftSelection = leftJList.getSelectedIndex();
-				}
-			}
-		});
-		if (almLeft != null)
-			leftScrollPane.setViewportView(leftJList);
-		return leftScrollPane;
-	}
-
-	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
-			DefaultListModel<String> almLeft, String buttonText,
-			DefaultListModel<String> almRight)
-	{
-		this();
-		this.bounds = bounds;
-		this.layoutManager = layoutManager;
-		this.almLeft = almLeft;
-		this.buttonText = buttonText;
-		this.almRight = almRight;
-		this.thisObject = this;
-
-		super.setBounds(bounds);
-
-		this.setLayout(layoutManager);
-		
-		leftScrollPane.setPreferredSize(new Dimension(
-				(int) (this.getWidth() * .4), this.getHeight()));
-		
-		this.add(doLeftJScrollPane(almLeft));
-
-		JButton button = new JButton(buttonText);
-		button.setPreferredSize(new Dimension((int) (this.getWidth() * .1),
-				(int) (this.getHeight() * .9)));
-		JList<String> rightJList = new JList<String>(almRight);
-
-		DefaultListModel<String> dlmLeft = (DefaultListModel<String>) leftJList
-				.getModel();
-		DefaultListModel<String> dlmRight = (DefaultListModel<String>) rightJList
-				.getModel();
-
 		button.addMouseListener(new MouseAdapter()
 		{
 			public void mouseReleased(MouseEvent arg0)
@@ -135,7 +89,42 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				thisObject.notifyObservers(dlmRight);
 			}
 		});
-		this.add(button);
+	}
+	
+	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
+			DefaultListModel<String> almLeft, String buttonText,
+			DefaultListModel<String> almRight)
+	{
+		this();
+		this.bounds = bounds;
+		this.layoutManager = layoutManager;
+		this.almLeft = almLeft;
+		this.buttonText = buttonText;
+		this.almRight = almRight;
+		this.thisObject = this;
+
+		super.setBounds(bounds);
+
+		this.setLayout(layoutManager);
+		
+		leftScrollPane.setPreferredSize(new Dimension(
+				(int) (this.getWidth() * .4), this.getHeight()));
+		
+		this.add(doLeftJScrollPane(almLeft));
+		
+		DefaultListModel<String> dlmLeft = (DefaultListModel<String>) leftJList
+				.getModel();
+
+		this.button = new JButton(buttonText);
+		this.button.setPreferredSize(new Dimension((int) (this.getWidth() * .1),
+				(int) (this.getHeight() * .9)));
+		
+		JList<String> rightJList = new JList<String>(almRight);
+		DefaultListModel<String> dlmRight = (DefaultListModel<String>) rightJList
+				.getModel();
+
+		doButtonListener(dlmLeft, dlmRight);
+		this.add(this.button);
 
 		rightScrollPane.setPreferredSize(new Dimension(
 				(int) (this.getWidth() * .4), this.getHeight()));
@@ -189,6 +178,24 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	public void clearChanged()
 	{
 		this.oFlag = false;
+	}
+
+	JScrollPane doLeftJScrollPane(DefaultListModel<String> almLeft)
+	{
+		this.leftJList = new JList<String>(almLeft);
+		leftJList.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				if (!arg0.getValueIsAdjusting())
+				{
+					leftSelection = leftJList.getSelectedIndex();
+				}
+			}
+		});
+		if (almLeft != null)
+			leftScrollPane.setViewportView(leftJList);
+		return leftScrollPane;
 	}
 
 	public boolean equals(Object obj)
