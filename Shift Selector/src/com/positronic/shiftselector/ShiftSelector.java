@@ -50,7 +50,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	private JScrollPane rightScrollPane;
 	private int rightSelection = -1;
 	private ShiftSelector thisObject;
-	
+
 	public ShiftSelector()
 	{
 		this.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -59,7 +59,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this.rightScrollPane = new JScrollPane();
 		this.rightScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
 	}
-	
+
 	public ShiftSelector(LayoutManager layoutManager, String[] leftItems,
 			String buttonText, String[] rightItems)
 	{
@@ -103,6 +103,13 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				new Dimension((int) (this.getWidth() * .4), this.getHeight()));
 
 		this.add(doRightJScrollPane(almRight));
+	}
+
+	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
+			String buttonText)
+	{
+		this(bounds, layoutManager, new DefaultListModel<String>(), buttonText,
+				new DefaultListModel<String>());
 	}
 
 	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
