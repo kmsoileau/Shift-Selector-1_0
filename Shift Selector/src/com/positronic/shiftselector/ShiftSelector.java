@@ -47,6 +47,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	private ShiftSelector thisObject;
 	private JScrollPane leftScrollPane;
 	private JScrollPane rightScrollPane;
+	private JList<String> leftJList;
 
 	public ShiftSelector()
 	{
@@ -62,6 +63,24 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	{
 		this(new Rectangle(750, 300), layoutManager, leftItems, buttonText,
 				rightItems);
+	}
+	
+	JScrollPane doLeftJScrollPane(DefaultListModel<String> almLeft)
+	{
+		this.leftJList = new JList<String>(almLeft);
+		leftJList.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				if (!arg0.getValueIsAdjusting())
+				{
+					leftSelection = leftJList.getSelectedIndex();
+				}
+			}
+		});
+		if (almLeft != null)
+			leftScrollPane.setViewportView(leftJList);
+		return leftScrollPane;
 	}
 
 	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
@@ -82,22 +101,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		
 		leftScrollPane.setPreferredSize(new Dimension(
 				(int) (this.getWidth() * .4), this.getHeight()));
-
 		
-		JList<String> leftJList = new JList<String>(almLeft);
-		leftJList.addListSelectionListener(new ListSelectionListener()
-		{
-			public void valueChanged(ListSelectionEvent arg0)
-			{
-				if (!arg0.getValueIsAdjusting())
-				{
-					leftSelection = leftJList.getSelectedIndex();
-				}
-			}
-		});
-		if (almLeft != null)
-			leftScrollPane.setViewportView(leftJList);
-		this.add(leftScrollPane);
+		this.add(doLeftJScrollPane(almLeft));
 
 		JButton button = new JButton(buttonText);
 		button.setPreferredSize(new Dimension((int) (this.getWidth() * .1),
@@ -132,11 +137,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		});
 		this.add(button);
 
-		//
-		//
 		rightScrollPane.setPreferredSize(new Dimension(
 				(int) (this.getWidth() * .4), this.getHeight()));
-
 		this.add(rightScrollPane);
 
 		rightJList.addListSelectionListener(new ListSelectionListener()
