@@ -224,8 +224,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 
 	JScrollPane doRightJScrollPane(DefaultListModel<String> almRight)
 	{
-		this.rightJList = new JList<String>(almRight);
-		rightJList.addListSelectionListener(new ListSelectionListener()
+		this.setRightJList(new JList<String>(almRight));
+		this.getRightJList().addListSelectionListener(new ListSelectionListener()
 		{
 			public void valueChanged(ListSelectionEvent arg0)
 			{
@@ -236,8 +236,18 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 			}
 		});
 		if (almRight != null)
-			rightScrollPane.setViewportView(rightJList);
+			rightScrollPane.setViewportView(this.getRightJList());
 		return rightScrollPane;
+	}
+
+	public JList<String> getRightJList()
+	{
+		return rightJList;
+	}
+
+	public void setRightJList(JList<String> rightJList)
+	{
+		this.rightJList = rightJList;
 	}
 
 	public boolean equals(Object obj)
