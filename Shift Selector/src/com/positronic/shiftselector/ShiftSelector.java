@@ -60,13 +60,6 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this.rightScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
 	}
 
-	public ShiftSelector(LayoutManager layoutManager, String[] leftItems,
-			String buttonText, String[] rightItems)
-	{
-		this(new Rectangle(750, 300), layoutManager, leftItems, buttonText,
-				rightItems);
-	}
-
 	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
 			DefaultListModel<String> almLeft, String buttonText,
 			DefaultListModel<String> almRight)
@@ -105,30 +98,17 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this.add(doRightJScrollPane(almRight));
 	}
 
-	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
-			String buttonText)
+	public ShiftSelector(Rectangle bounds, String[] leftItems,
+			String buttonText, String[] rightItems)
 	{
-		this(bounds, layoutManager, new DefaultListModel<String>(), buttonText,
-				new DefaultListModel<String>());
-	}
-
-	public ShiftSelector(Rectangle bounds, LayoutManager layoutManager,
-			String[] leftItems, String buttonText, String[] rightItems)
-	{
-		this(bounds, layoutManager, new DefaultListModel<String>(), buttonText,
-				new DefaultListModel<String>());
+		this(bounds, new FlowLayout(), new DefaultListModel<String>(),
+				buttonText, new DefaultListModel<String>());
 
 		for (int i = 0; i < leftItems.length; i++)
 			this.almLeft.addElement(leftItems[i]);
 
 		for (int i = 0; i < rightItems.length; i++)
 			this.almRight.addElement(rightItems[i]);
-	}
-
-	public ShiftSelector(String[] leftItems, String buttonText,
-			String[] rightItems)
-	{
-		this(new FlowLayout(), leftItems, buttonText, rightItems);
 	}
 
 	public synchronized void addObserver(iObserver o)
@@ -368,7 +348,6 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this.buttonText = buttonText;
 	}
 
-	// Sets the internal flag that indicates this observable has changed state.
 	public synchronized void setChanged()
 	{
 		this.oFlag = true;
