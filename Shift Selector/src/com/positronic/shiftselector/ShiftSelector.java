@@ -125,7 +125,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	{
 		this.oFlag = false;
 	}
-	
+
 	void doButtonListener(DefaultListModel<String> dlmLeft,
 			DefaultListModel<String> dlmRight)
 	{
@@ -143,12 +143,16 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				}
 
 				thisObject.setChanged();
-				thisObject.notifyObservers(dlmRight);
+				ShiftSelectorStatus status = new ShiftSelectorStatus(almLeft, almRight, leftJList,
+						leftScrollPane, leftSelection, observers, oFlag,
+						rightJList, rightScrollPane, rightSelection);
+				thisObject.notifyObservers(status);
 			}
 		});
 	}
-	
-	void doDeselectItem(DefaultListModel<String> dlmLeft, DefaultListModel<String> dlmRight)
+
+	void doDeselectItem(DefaultListModel<String> dlmLeft,
+			DefaultListModel<String> dlmRight)
 	{
 		String o = dlmRight.getElementAt(rightSelection);
 		dlmRight.removeElement(o);
@@ -193,7 +197,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		return rightScrollPane;
 	}
 
-	void doSelectItem(DefaultListModel<String> dlmLeft, DefaultListModel<String> dlmRight)
+	void doSelectItem(DefaultListModel<String> dlmLeft,
+			DefaultListModel<String> dlmRight)
 	{
 		String o = dlmLeft.getElementAt(leftSelection);
 		dlmLeft.removeElement(o);
