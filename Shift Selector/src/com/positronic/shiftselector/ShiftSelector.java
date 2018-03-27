@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -143,9 +144,10 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				}
 
 				thisObject.setChanged();
-				ShiftSelectorStatus status = new ShiftSelectorStatus(almLeft, almRight, leftJList,
-						leftScrollPane, leftSelection, observers, oFlag,
-						rightJList, rightScrollPane, rightSelection);
+				ShiftSelectorStatus status = new ShiftSelectorStatus(almLeft,
+						almRight, leftJList, leftScrollPane, leftSelection,
+						observers, oFlag, rightJList, rightScrollPane,
+						rightSelection);
 				thisObject.notifyObservers(status);
 			}
 		});
@@ -336,6 +338,24 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 
 		for (int i = arrLocal.length - 1; i >= 0; i--)
 			((iObserver) arrLocal[i]).update(this, arg);
+	}
+
+	public String[] readLeftList()
+	{
+		ListModel<String> x = this.leftJList.getModel();
+		String[] ret = new String[x.getSize()];
+		for (int i = 0; i < x.getSize(); i++)
+			ret[i] = x.getElementAt(i);
+		return ret;
+	}
+
+	public String[] readRightList()
+	{
+		ListModel<String> x = this.rightJList.getModel();
+		String[] ret = new String[x.getSize()];
+		for (int i = 0; i < x.getSize(); i++)
+			ret[i] = x.getElementAt(i);
+		return ret;
 	}
 
 	public void setAlmLeft(DefaultListModel<String> almLeft)
