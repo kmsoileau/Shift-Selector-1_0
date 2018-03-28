@@ -41,6 +41,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	protected Rectangle bounds;
 	private JButton button;
 	protected String buttonText;
+	private String lastDeselected;
+	private String lastSelected;
 	protected LayoutManager layoutManager;
 	private JList<String> leftJList;
 	private JScrollPane leftScrollPane;
@@ -147,7 +149,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				ShiftSelectorStatus status = new ShiftSelectorStatus(almLeft,
 						almRight, leftJList, leftScrollPane, leftSelection,
 						observers, oFlag, rightJList, rightScrollPane,
-						rightSelection);
+						rightSelection, lastSelected, lastDeselected);
 				thisObject.notifyObservers(status);
 			}
 		});
@@ -159,6 +161,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		String o = dlmRight.getElementAt(rightSelection);
 		dlmRight.removeElement(o);
 		dlmLeft.add(dlmLeft.getSize(), o);
+		this.lastDeselected = o;
 	}
 
 	JScrollPane doLeftJScrollPane(DefaultListModel<String> almLeft)
@@ -205,6 +208,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		String o = dlmLeft.getElementAt(leftSelection);
 		dlmLeft.removeElement(o);
 		dlmRight.add(dlmRight.getSize(), o);
+		this.lastSelected = o;
 	}
 
 	public boolean equals(Object obj)

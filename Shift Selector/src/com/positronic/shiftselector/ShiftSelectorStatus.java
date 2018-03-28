@@ -1,6 +1,7 @@
 package com.positronic.shiftselector;
 
 import java.util.ArrayList;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -9,6 +10,8 @@ public class ShiftSelectorStatus
 {
 	private DefaultListModel<String> almLeft;
 	private DefaultListModel<String> almRight;
+	private String lastDeselected;
+	private String lastSelected;
 	private JList<String> leftJList;
 	private JScrollPane leftScrollPane;
 	private int leftSelection;
@@ -23,7 +26,7 @@ public class ShiftSelectorStatus
 			JScrollPane leftScrollPane, int leftSelection,
 			ArrayList<iObserver> observers, boolean oFlag,
 			JList<String> rightJList, JScrollPane rightScrollPane,
-			int rightSelection)
+			int rightSelection, String lastSelected, String lastDeselected)
 	{
 		super();
 		this.almLeft = almLeft;
@@ -35,7 +38,8 @@ public class ShiftSelectorStatus
 		this.oFlag = oFlag;
 		this.rightJList = rightJList;
 		this.rightScrollPane = rightScrollPane;
-		this.rightSelection = rightSelection;
+		this.lastSelected = lastSelected;
+		this.lastDeselected = lastDeselected;
 	}
 
 	public DefaultListModel<String> getAlmLeft()
