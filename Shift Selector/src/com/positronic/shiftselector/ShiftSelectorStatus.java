@@ -20,7 +20,7 @@ public class ShiftSelectorStatus
 	private JList<String> rightJList;
 	private JScrollPane rightScrollPane;
 	private int rightSelection;
-
+	
 	public ShiftSelectorStatus(DefaultListModel<String> almLeft,
 			DefaultListModel<String> almRight, JList<String> leftJList,
 			JScrollPane leftScrollPane, int leftSelection,
@@ -41,7 +41,7 @@ public class ShiftSelectorStatus
 		this.lastSelected = lastSelected;
 		this.lastDeselected = lastDeselected;
 	}
-
+	
 	public DefaultListModel<String> getAlmLeft()
 	{
 		return almLeft;
@@ -50,6 +50,16 @@ public class ShiftSelectorStatus
 	public DefaultListModel<String> getAlmRight()
 	{
 		return almRight;
+	}
+
+	public String getLastDeselected()
+	{
+		return lastDeselected;
+	}
+
+	public String getLastSelected()
+	{
+		return lastSelected;
 	}
 
 	public JList<String> getLeftJList()
