@@ -36,8 +36,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		return serialVersionUID;
 	}
 
-	private DefaultListModel<String> almLeft;
-	private DefaultListModel<String> almRight;
+	private DefaultListModel<String> _leftItems;
+	private DefaultListModel<String> _rightItems;
 	protected Rectangle bounds;
 	private JButton button;
 	protected String buttonText;
@@ -70,9 +70,9 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		this();
 		this.bounds = bounds;
 		this.layoutManager = layoutManager;
-		this.almLeft = almLeft;
+		this._leftItems = almLeft;
 		this.buttonText = buttonText;
-		this.almRight = almRight;
+		this._rightItems = almRight;
 		this.thisObject = this;
 
 		super.setBounds(bounds);
@@ -108,10 +108,10 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				buttonText, new DefaultListModel<String>());
 
 		for (int i = 0; i < leftItems.length; i++)
-			this.almLeft.addElement(leftItems[i]);
+			this._leftItems.addElement(leftItems[i]);
 
 		for (int i = 0; i < rightItems.length; i++)
-			this.almRight.addElement(rightItems[i]);
+			this._rightItems.addElement(rightItems[i]);
 	}
 
 	public synchronized void addObserver(iObserver o)
@@ -146,8 +146,8 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 				}
 
 				thisObject.setChanged();
-				ShiftSelectorStatus status = new ShiftSelectorStatus(almLeft,
-						almRight, leftJList, leftScrollPane, leftSelection,
+				ShiftSelectorStatus status = new ShiftSelectorStatus(_leftItems,
+						_rightItems, leftJList, leftScrollPane, leftSelection,
 						observers, oFlag, rightJList, rightScrollPane,
 						rightSelection, lastSelected, lastDeselected);
 				thisObject.notifyObservers(status);
@@ -220,19 +220,19 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 		if (!(obj instanceof ShiftSelector))
 			return false;
 		ShiftSelector other = (ShiftSelector) obj;
-		if (almLeft == null)
+		if (_leftItems == null)
 		{
-			if (other.almLeft != null)
+			if (other._leftItems != null)
 				return false;
 		}
-		else if (!almLeft.equals(other.almLeft))
+		else if (!_leftItems.equals(other._leftItems))
 			return false;
-		if (almRight == null)
+		if (_rightItems == null)
 		{
-			if (other.almRight != null)
+			if (other._rightItems != null)
 				return false;
 		}
-		else if (!almRight.equals(other.almRight))
+		else if (!_rightItems.equals(other._rightItems))
 			return false;
 		if (bounds == null)
 		{
@@ -260,12 +260,12 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 
 	public DefaultListModel<String> getAlmLeft()
 	{
-		return almLeft;
+		return _leftItems;
 	}
 
 	public DefaultListModel<String> getAlmRight()
 	{
-		return almRight;
+		return _rightItems;
 	}
 
 	public Rectangle getBounds()
@@ -312,9 +312,9 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((almLeft == null) ? 0 : almLeft.hashCode());
+		result = prime * result + ((_leftItems == null) ? 0 : _leftItems.hashCode());
 		result = prime * result
-				+ ((almRight == null) ? 0 : almRight.hashCode());
+				+ ((_rightItems == null) ? 0 : _rightItems.hashCode());
 		result = prime * result + ((bounds == null) ? 0 : bounds.hashCode());
 		result = prime * result
 				+ ((buttonText == null) ? 0 : buttonText.hashCode());
@@ -364,12 +364,12 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 
 	public void setAlmLeft(DefaultListModel<String> almLeft)
 	{
-		this.almLeft = almLeft;
+		this._leftItems = almLeft;
 	}
 
 	public void setAlmRight(DefaultListModel<String> almRight)
 	{
-		this.almRight = almRight;
+		this._rightItems = almRight;
 	}
 
 	public void setBounds(Rectangle bounds)
@@ -419,7 +419,7 @@ public class ShiftSelector extends JPanel implements Serializable, iObservable
 
 	public String toString()
 	{
-		return "ShiftSelector [almLeft=" + almLeft + ", almRight=" + almRight //$NON-NLS-1$ //$NON-NLS-2$
+		return "ShiftSelector [almLeft=" + _leftItems + ", almRight=" + _rightItems //$NON-NLS-1$ //$NON-NLS-2$
 				+ ", bounds=" + bounds + ", buttonText=" + buttonText //$NON-NLS-1$ //$NON-NLS-2$
 				+ ", layoutManager=" + layoutManager + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
