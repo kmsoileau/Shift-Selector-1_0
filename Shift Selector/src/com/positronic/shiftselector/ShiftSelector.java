@@ -29,7 +29,7 @@ import javax.swing.event.ListSelectionListener;
 
 public class ShiftSelector extends JPanel implements Serializable, iObservable
 {
-	private static final long serialVersionUID = -4468144209547852942L;
+	private static final long serialVersionUID = -6988666678198729920L;
 
 	public static long getSerialversionuid()
 	{
