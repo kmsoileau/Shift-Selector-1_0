@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 public class ShiftSelectorStatus
 {
 	private DefaultListModel<String> almLeft;
+
 	private DefaultListModel<String> almRight;
 	private String lastDeselected;
 	private String lastSelected;
@@ -41,7 +42,7 @@ public class ShiftSelectorStatus
 		this.lastSelected = lastSelected;
 		this.lastDeselected = lastDeselected;
 	}
-	
+
 	public DefaultListModel<String> getAlmLeft()
 	{
 		return almLeft;
@@ -150,5 +151,15 @@ public class ShiftSelectorStatus
 	public void setRightSelection(int rightSelection)
 	{
 		this.rightSelection = rightSelection;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "ShiftSelectorStatus [\nalmLeft=" + almLeft + ", \nalmRight="
+				+ almRight + ", \nlastDeselected=" + lastDeselected
+				+ ", \nlastSelected=" + lastSelected + ", \nleftSelection="
+				+ leftSelection + ", \noFlag=" + oFlag + ", \nrightSelection="
+				+ rightSelection + "\n]";
 	}
 }
