@@ -153,7 +153,6 @@ public class ShiftSelectorStatus
 		this.rightSelection = rightSelection;
 	}
 
-	@Override
 	public String toString()
 	{
 		return "ShiftSelectorStatus [\nalmLeft=" + almLeft + ", \nalmRight="
